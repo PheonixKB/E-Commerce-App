@@ -7,7 +7,7 @@ const Navbar = () => {
     const [visible, setVisible] = useState(false);
   return (
     <>
-        <nav className="sticky top-0 z-50 bg-white shadow-md">
+        <nav className="sticky top-0 z-50 bg-white border-b border-stone-300 shadow-sm">
             <div className="max-w-7xl mx-auto px-8">
                 <div className="flex items-center justify-between h-20">
 
