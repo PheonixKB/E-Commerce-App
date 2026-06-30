@@ -4,10 +4,11 @@ import LatestCollection from '../components/LatestCollection'
 
 const Home = () => {
   return (
-    <div className="space-y-24">
+    <>
       <Hero />
+      <div className="h-32"></div>
       <LatestCollection />
-    </div>
+    </>
   )
 }
 
