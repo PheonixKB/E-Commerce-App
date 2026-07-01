@@ -62,7 +62,7 @@ const Navbar = () => {
                     </ul>
 
                     {/* Right Icons */}
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-right xl:translate-x-48 gap-4">
 
                         <Search
                         size={22}

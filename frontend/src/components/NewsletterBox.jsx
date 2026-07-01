@@ -6,7 +6,7 @@ const NewsletterBox = () => {
         // Handle form submission logic here (e.g., send email to backend)
     }
   return (
-    <div className="text-center py-16">
+    <div className="text-center py-16 xl:translate-x-24">
         <p className="text-2xl font-semibold text-gray-800">
             Subscribe Now & Get 20% Off
         </p>

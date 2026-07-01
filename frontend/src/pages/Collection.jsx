@@ -55,14 +55,15 @@ const Collection = () => {
   }, [products, selectedCategories, selectedAges, sortType])
 
   return (
-    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8  py-12">
+    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <Title text1="ALL" text2="COLLECTIONS" />
-        <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base xl:translate-x-80 leading-7">
+        <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base lg:translate-x-64 xl:translate-x-80 leading-7">
           Filter by audience and age group, then sort by price to find the right style faster.
         </p>
       </div>
 
+      
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 items-start">
         <aside className="border border-stone-200 rounded-lg p-6">
           <div>
@@ -78,7 +79,7 @@ const Collection = () => {
                     checked={selectedCategories.includes(filter.value)}
                     onChange={() => toggleFilter(filter.value, selectedCategories, setSelectedCategories)}
                     className="h-4 w-4 accent-stone-700"
-                  />
+                    />
                   {filter.label}
                 </label>
               ))}
@@ -98,7 +99,7 @@ const Collection = () => {
                     checked={selectedAges.includes(filter.value)}
                     onChange={() => toggleFilter(filter.value, selectedAges, setSelectedAges)}
                     className="h-4 w-4 accent-stone-700"
-                  />
+                    />
                   {filter.label}
                 </label>
               ))}
@@ -117,7 +118,7 @@ const Collection = () => {
               onChange={(event) => setSortType(event.target.value)}
               className="w-full sm:w-56 border border-stone-300 rounded-md px-4 py-3 text-sm text-gray-700 outline-none focus:border-stone-700"
               aria-label="Sort products"
-            >
+              >
               <option value="relevant">Sort by: Newest</option>
               <option value="price-low-high">Price: Low to High</option>
               <option value="price-high-low">Price: High to Low</option>
@@ -128,11 +129,11 @@ const Collection = () => {
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
               {filteredProducts.map((item) => (
                 <ProductItem
-                  key={item._id}
-                  id={item._id}
-                  image={item.image}
-                  name={item.name}
-                  price={item.price}
+                key={item._id}
+                id={item._id}
+                image={item.image}
+                name={item.name}
+                price={item.price}
                 />
               ))}
             </div>
@@ -144,7 +145,7 @@ const Collection = () => {
         </div>
       </div>
     </section>
-  )
+  );
 }
 
 export default Collection

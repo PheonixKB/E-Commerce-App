@@ -14,27 +14,25 @@ import Footer from './components/Footer'
 
 function App() {
   return (
-  <>
-    <NavBar />
+    <>
+          <NavBar />
 
-    {/* Application Routes */}
-    <main className="pt-8 min-h-screen">
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/collection" element={<Collection />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/product/:productID" element={<Product />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/place-order" element={<PlaceOrder />} />
-        <Route path="/orders" element={<Orders />} />
-      </Routes>
-    </main>
-
-    <Footer />
-  </>
-);
+          <main className="pt-8">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/collection" element={<Collection />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/product/:productID" element={<Product />} />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/place-order" element={<PlaceOrder />} />
+            <Route path="/orders" element={<Orders />} />
+          </Routes>
+          </main>
+          <Footer />
+    </>
+  )
 }
 
 export default App

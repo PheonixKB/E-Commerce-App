@@ -3,7 +3,7 @@ import { assets } from '../assets/frontend_assets/assets'
 
 const OurPolicy = () => {
   return (
-    <div className="flex flex-col sm:flex-row justify-around gap-10 lg:gap-20 text-center py-20 text-xs sm:text-sm md:text-base text-gray-700">
+    <div className="flex flex-col sm:flex-row justify-around gap-10 lg:gap-20 xl:translate-x-24 text-center py-20 text-xs sm:text-sm md:text-base text-gray-700">
 
       <div className="flex flex-col items-center max-w-xs mx-auto">
         <img
