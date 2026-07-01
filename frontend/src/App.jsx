@@ -11,6 +11,7 @@ import Login from './pages/Login'
 import PlaceOrder from './pages/PlaceOrder'
 import Orders from './pages/Orders'
 import NavBar from './components/NavBar'
+import Footer from './components/Footer'
 
 function App() {
   const [count, setCount] = useState(0)
@@ -33,6 +34,8 @@ function App() {
             <Route path="/place-order" element={<PlaceOrder />} />
             <Route path="/orders" element={<Orders />} />
           </Routes>
+          <div className="h-6"></div>
+          <Footer />
           </main>
         </>
       </div>

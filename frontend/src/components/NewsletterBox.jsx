@@ -1,6 +1,10 @@
 import React from 'react'
 
 const NewsletterBox = () => {
+    const onSubmitHandler = (event) => {
+        event.preventDefault();
+        // Handle form submission logic here (e.g., send email to backend)
+    }
   return (
     <div className="text-center py-16">
         <p className="text-2xl font-semibold text-gray-800">
@@ -11,7 +15,7 @@ const NewsletterBox = () => {
             Be the first to discover new arrivals, exclusive offers, and special discounts delivered straight to your inbox.
         </p>
 
-        <form className="mt-10 flex flex-col items-center gap-2">
+        <form onSubmit={onSubmitHandler} className="mt-10 flex flex-col items-center gap-2">
             <input
                 type="email"
                 placeholder="Enter your email"
