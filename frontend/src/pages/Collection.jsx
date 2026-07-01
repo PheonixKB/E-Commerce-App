@@ -55,10 +55,10 @@ const Collection = () => {
   }, [products, selectedCategories, selectedAges, sortType])
 
   return (
-    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
+    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8  py-12">
       <div className="text-center mb-12">
         <Title text1="ALL" text2="COLLECTIONS" />
-        <p className="max-w-2xl mx-auto mt-5 text-gray-500 text-sm sm:text-base leading-7">
+        <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base xl:translate-x-80 leading-7">
           Filter by audience and age group, then sort by price to find the right style faster.
         </p>
       </div>
