@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import {assets} from '../assets/frontend_assets/assets'
-import { ShopContext } from '../context/ShopContext'
+import { ShopContext } from '../context/ShopContextDefinition'
 import Title from './Title';
 import ProductItem from './ProductItem';
 
@@ -12,20 +11,44 @@ const BestSeller = () => {
         setBestSeller(bestProduct.slice(0, 5));
     }, [products]);
   return (
-    <div className='m-10'>
-        <div className='text-center text-3xl py-8'>
-            <Title text1={'BEST'} text2={'SELLERS'}/>
-            <p className='mx-auto mt-6 px-6 text-center text-gray-500 text-base leading-8'>
-                Explore our best-selling collection of men's, women's, and children's fashion. Handpicked by our customers for style, comfort, and quality.
+    <section>
+
+        {/* ===========================
+            Section Heading
+        =========================== */}
+        <div className="max-w-3xl mx-auto lg:translate-x-48 xl:translate-x-96 text-center mb-12">
+
+            <Title
+                text1="BEST"
+                text2="SELLERS"
+            />
+
+            <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
+                Explore our best-selling collection of men's, women's, and children's fashion.
+                Handpicked by our customers for style, comfort, and quality.
             </p>
+
         </div>
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
-            {bestSeller.map((item,index)=>(
-                <ProductItem key={index} id={item._id} name={item.name} image={item.image} price={item.price}/>
+
+        {/* ===========================
+            Best Seller Products
+        =========================== */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(4,220px)] xl:grid-cols-[repeat(5,220px)] justify-center gap-8 justify-items-center lg:translate-x-16 xl:translate-x-24">
+
+            {bestSeller.map((item) => (
+                <ProductItem
+                    key={item._id}
+                    id={item._id}
+                    name={item.name}
+                    image={item.image}
+                    price={item.price}
+                />
             ))}
+
         </div>
-    </div>
-  )
+
+    </section>
+)
 }
 
 export default BestSeller

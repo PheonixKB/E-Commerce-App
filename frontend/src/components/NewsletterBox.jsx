@@ -19,13 +19,13 @@ const NewsletterBox = () => {
             <input
                 type="email"
                 placeholder="Enter your email"
-                className="w-full sm:w-2/3 lg:w-1/2 px-4 py-3 border border-gray-300 rounded-md outline-none focus:border-stone-700"
+                className="w-full max-w-xl px-4 py-3 border border-gray-300 rounded-md outline-none focus:border-stone-700"
             />
 
             <button
                 type="submit"
-                className="bg-stone-700 text-white px-8 py-3 rounded-md hover:bg-stone-800 transition-colors duration-300"
-            >
+                className=" mt-2 bg-stone-700 hover:bg-stone-800 text-white font-medium px-8 py-3 rounded-md transition"
+                aria-label="Subscribe">
                 SUBSCRIBE
             </button>
         </form>

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import {Routes, Route} from 'react-router-dom'
 import './App.css'
 import Home from './pages/Home'
@@ -14,33 +13,28 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 
 function App() {
-  const [count, setCount] = useState(0)
-  
   return (
-    <>
-      <div className="mt-6">
-        <>
-          <NavBar />
+  <>
+    <NavBar />
 
-          <main className="px-4 sm:px-6 md:px-8 lg:px-12 pt-8">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/collection" element={<Collection />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/product/:productID" element={<Product />} />
-            <Route path="/cart" element={<Cart />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/place-order" element={<PlaceOrder />} />
-            <Route path="/orders" element={<Orders />} />
-          </Routes>
-          <div className="h-6"></div>
-          <Footer />
-          </main>
-        </>
-      </div>
-    </>
-  )
+    {/* Application Routes */}
+    <main className="pt-8 min-h-screen">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/collection" element={<Collection />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/product/:productID" element={<Product />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/place-order" element={<PlaceOrder />} />
+        <Route path="/orders" element={<Orders />} />
+      </Routes>
+    </main>
+
+    <Footer />
+  </>
+);
 }
 
 export default App

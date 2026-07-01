@@ -1,5 +1,5 @@
 import {useContext, useEffect, useState} from 'react'
-import { ShopContext } from '../context/ShopContext';
+import { ShopContext } from '../context/ShopContextDefinition';
 import Title from './Title'
 import ProductItem from './ProductItem';
 
@@ -8,31 +8,46 @@ const LatestCollection = () => {
     const [latestProducts , setLatestProducts]=useState([]);
     useEffect(()=>{
         setLatestProducts(products.slice(0,10));
-    },[])
+    },[products])
   return (
-    <div className="my-20">
-        <div className='text-center py-8 text-3xl'>
+    <section>
+
+        {/* ===========================
+            Section Heading
+        =========================== */}
+        <div className="max-w-3xl mx-auto lg:translate-x-48 xl:translate-x-96 text-center mb-12">
+
             <Title
                 text1="LATEST"
                 text2="COLLECTION"
             />
 
-            <p className="mx-auto mt-6 px-6 text-center text-gray-500 text-base leading-8">
-                Discover the latest fashion trends with our carefully curated collection of premium clothing.<br/>
-                From everyday essentials to statement pieces, explore styles designed to elevate your wardrobe for every season and occasion.
+            <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
+                Discover the latest fashion trends with our carefully curated collection of premium clothing.
+                From everyday essentials to statement pieces, explore styles designed for every season and occasion.
             </p>
+
         </div>
 
-        <div className="h-6"></div>
+        {/* ===========================
+            Latest Collection Products
+        =========================== */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(4,220px)] xl:grid-cols-[repeat(5,220px)] justify-center gap-8 justify-items-center lg:translate-x-16 xl:translate-x-24">
 
-        {/* Rendering Products */}
-        <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 gap-y-6'>
-            {latestProducts.map((item,index)=>(
-                <ProductItem key={index} id={item._id} image={item.image} name={item.name} price={item.price}/>
+            {latestProducts.map((item) => (
+                <ProductItem
+                    key={item._id}
+                    id={item._id}
+                    image={item.image}
+                    name={item.name}
+                    price={item.price}
+                />
             ))}
+
         </div>
-    </div>
-  )
+
+    </section>
+)
 }
 
 export default LatestCollection

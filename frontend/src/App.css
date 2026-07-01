@@ -1,57 +1,32 @@
 /* Reset */
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
 }
 
-/* Smooth scrolling */
-
-html {
-  scroll-behavior: smooth;
+html{
+    scroll-behavior:smooth;
 }
 
-/* Body */
-
-body {
-  min-height: 100vh;
-  background-color: #f8fafc; /* Light gray */
-  color: #1f2937;
-  font-family: "Inter", sans-serif;
-  overflow-x: hidden;
+body{
+    min-height:100vh;
+    overflow-x:hidden;
+    background:#fff;
+    color:#1f2937;
+    font-family:Inter,sans-serif;
 }
 
-/* Root */
-
-#root {
-  min-height: 100vh;
+#root{
+    min-height:100vh;
 }
 
-/* Links */
-
-a {
-  text-decoration: none;
-  color: inherit;
+a{
+    text-decoration:none;
+    color:inherit;
 }
 
-/* Buttons */
-
-button {
-  cursor: pointer;
-  border: none;
-  outline: none;
-}
-
-/* Images */
-
-img {
-  display: block;
-  max-width: 100%;
-}
-
-/* Lists */
-
-ul {
-  list-style: none;
+img{
+    display:block;
+    max-width:100%;
 }

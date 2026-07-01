@@ -1,16 +1,17 @@
 import React, { useContext } from 'react'
-import { ShopContext } from '../context/ShopContext'
+import { ShopContext } from '../context/ShopContextDefinition'
 import {Link} from 'react-router-dom'
 
 const ProductItem = ({id,image,name,price}) => {
     const {currency} = useContext(ShopContext);
+    const productImage = Array.isArray(image) ? image[0] : image;
   return (
-    <Link className='text-gray-700 cursor-pointer' to={'/product/${id}'}>
+    <Link className='group w-full max-w-[220px] text-center text-gray-700' to={`/product/${id}`}>
         <div className='overflow-hidden'>
-            <img className='hover:scale-110 transition ease-in-out' src={image[0]} alt=""/>
+            <img className="w-full aspect-[4/5] object-cover rounded-lg transition-transform duration-500 group-hover:scale-105" src={productImage} alt={name} />
         </div>
-        <p className='pt-3 pb-1 text-sm'>{name}</p>
-        <p className='text-sm font-medium'>{currency}{price}</p>
+        <p className='mt-4 text-sm font-medium line-clamp-2'>{name}</p>
+        <p className='mt-1 text-stone-800 font-semibold'>{currency}{price}</p>
     </Link>
   )
 }

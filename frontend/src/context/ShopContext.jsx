@@ -1,8 +1,5 @@
-import {createContext} from "react";
 import {products} from "../assets/frontend_assets/assets"
-
-export const ShopContext = createContext();
-
+import { ShopContext } from "./ShopContextDefinition";
 
 const ShopContextProvider = ({children}) => {
     const currency = '$';
