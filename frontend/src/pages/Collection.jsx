@@ -1,24 +1,29 @@
 import React, { useContext, useMemo, useState } from 'react'
 import ProductItem from '../components/ProductItem'
 import Title from '../components/Title'
+import {assets} from '../assets/frontend_assets/assets'
 import { ShopContext } from '../context/ShopContextDefinition'
 
 const categoryFilters = [
   { label: 'Men', value: 'Men' },
   { label: 'Women', value: 'Women' },
-  { label: 'Children', value: 'Kids' },
+  { label: 'Kids', value: 'Kids' },
 ]
 
-const ageFilters = [
-  { label: 'Adults', value: 'Adults' },
-  { label: 'Children', value: 'Children' },
+const subCategoryFilters = [
+  { label: 'Topwear', value: 'Topwear' },
+  { label: 'Bottomwear', value: 'Bottomwear' },
+  { label: 'Winterwear', value: 'Winterwear' },
 ]
 
 const Collection = () => {
-  const { products } = useContext(ShopContext)
+  const { products , search } = useContext(ShopContext)
   const [selectedCategories, setSelectedCategories] = useState([])
-  const [selectedAges, setSelectedAges] = useState([])
+  const [selectedSubcategories, setSelectedSubcategories] = useState([])
   const [sortType, setSortType] = useState('relevant')
+  const [showFilters, setShowFilters] = useState(false);
+  const [showAudience, setShowAudience] = useState(false);
+  const [showWearType, setShowWearType] = useState(false);
 
   const toggleFilter = (value, selectedValues, setSelectedValues) => {
     setSelectedValues((currentValues) =>
@@ -29,16 +34,23 @@ const Collection = () => {
   }
 
   const filteredProducts = useMemo(() => {
+    
     const nextProducts = products.filter((product) => {
+      const matchesSearch =
+      search.trim() === "" ||
+      product.name.toLowerCase().includes(search.toLowerCase()) ||
+      product.description.toLowerCase().includes(search.toLowerCase());
       const matchesCategory =
         selectedCategories.length === 0 ||
         selectedCategories.includes(product.category)
+      
+      const matchesSubcategory = selectedSubcategories.length === 0 || selectedSubcategories.includes(product.subCategory)
 
-      const productAgeGroup = product.category === 'Kids' ? 'Children' : 'Adults'
-      const matchesAge =
-        selectedAges.length === 0 || selectedAges.includes(productAgeGroup)
-
-      return matchesCategory && matchesAge
+      return (
+    matchesSearch &&
+    matchesCategory &&
+    matchesSubcategory
+);
     })
 
     return [...nextProducts].sort((a, b) => {
@@ -52,63 +64,132 @@ const Collection = () => {
 
       return b.date - a.date
     })
-  }, [products, selectedCategories, selectedAges, sortType])
+  }, [products,search, selectedCategories, selectedSubcategories, sortType])
 
   return (
     <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
       <div className="text-center mb-12">
         <Title text1="ALL" text2="COLLECTIONS" />
-        <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base lg:translate-x-64 xl:translate-x-80 leading-7">
+        <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base lg:translate-x-[260px] xl:translate-x-80 leading-7">
           Filter by audience and age group, then sort by price to find the right style faster.
         </p>
       </div>
 
       
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 items-start">
-        <aside className="border border-stone-200 rounded-lg p-6">
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-700">
-              Category
-            </h3>
+        <aside className="border border-stone-200 rounded-lg p-8 flex flex-col gap-6">
 
-            <div className="mt-5 space-y-3">
-              {categoryFilters.map((filter) => (
-                <label key={filter.value} className="flex items-center gap-3 text-sm text-gray-600">
-                  <input
-                    type="checkbox"
-                    checked={selectedCategories.includes(filter.value)}
-                    onChange={() => toggleFilter(filter.value, selectedCategories, setSelectedCategories)}
-                    className="h-4 w-4 accent-stone-700"
+          {/* Filters Heading */}
+          <h2 className="text-lg font-bold text-stone-700">
+              Filters
+          </h2>
+
+          {/* ================= Audience ================= */}
+          <div className="border-t border-stone-200 rounded-lg pt-8">
+
+              <button
+                  type="button"
+                  onClick={() => setShowAudience(!showAudience)}
+                  className="w-full flex items-center justify-between"
+              >
+                  <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-700">
+                      Audience
+                  </h3>
+
+                  {/* Hidden on Desktop */}
+                  <div className="sm:hidden flex items-center">
+                    <img
+                        src={assets.dropdown_icon}
+                        alt=""
+                        className={`h-3 -translate-x-2 transition-transform duration-300 ${
+                            showAudience ? "rotate-90" : ""
+                        }`}
                     />
-                  {filter.label}
-                </label>
-              ))}
-            </div>
+                  </div>
+              </button>
+
+              <div className={`${showAudience ? "block" : "hidden"} sm:block mt-5`}>
+                  <div className="flex flex-col gap-4">
+                      {categoryFilters.map((filter) => (
+                          <label
+                              key={filter.value}
+                              className="flex items-center gap-3 text-sm text-gray-600"
+                          >
+                              <input
+                                  type="checkbox"
+                                  checked={selectedCategories.includes(filter.value)}
+                                  onChange={() =>
+                                      toggleFilter(
+                                          filter.value,
+                                          selectedCategories,
+                                          setSelectedCategories
+                                      )
+                                  }
+                                  className="h-4 w-4 accent-stone-700"
+                              />
+                              {filter.label}
+                          </label>
+                      ))}
+                  </div>
+              </div>
+
           </div>
 
-          <div className="mt-8 pt-8 border-t border-stone-200">
-            <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-700">
-              Age Group
-            </h3>
+          {/* ================= Wear Type ================= */}
+          <div className="border-t border-stone-200 rounded-lg pt-8">
 
-            <div className="mt-5 space-y-3">
-              {ageFilters.map((filter) => (
-                <label key={filter.value} className="flex items-center gap-3 text-sm text-gray-600">
-                  <input
-                    type="checkbox"
-                    checked={selectedAges.includes(filter.value)}
-                    onChange={() => toggleFilter(filter.value, selectedAges, setSelectedAges)}
-                    className="h-4 w-4 accent-stone-700"
+              <button
+                  type="button"
+                  onClick={() => setShowWearType(!showWearType)}
+                  className="w-full flex items-center justify-between"
+              >
+                  <h3 className="text-sm font-semibold uppercase tracking-widest text-stone-700">
+                      Wear Type
+                  </h3>
+
+                  {/* Hidden on Desktop */}
+                  <div className="sm:hidden flex items-center">
+                    <img
+                        src={assets.dropdown_icon}
+                        alt=""
+                        className={`h-3 -translate-x-2 transition-transform duration-300 ${ 
+                            showWearType ? "rotate-90" : ""
+                        }`}
                     />
-                  {filter.label}
-                </label>
-              ))}
-            </div>
+                  </div>
+              </button>
+
+              <div className={`${showWearType ? "block" : "hidden"} sm:block mt-5`}>
+                  <div className="flex flex-col gap-4">
+                      {subCategoryFilters.map((filter) => (
+                          <label
+                              key={filter.value}
+                              className="flex items-center gap-3 text-sm text-gray-600"
+                          >
+                              <input
+                                  type="checkbox"
+                                  checked={selectedSubcategories.includes(filter.value)}
+                                  onChange={() =>
+                                      toggleFilter(
+                                          filter.value,
+                                          selectedSubcategories,
+                                          setSelectedSubcategories
+                                      )
+                                  }
+                                  className="h-4 w-4 accent-stone-700"
+                              />
+                              {filter.label}
+                          </label>
+                      ))}
+                  </div>
+              </div>
+
           </div>
+
         </aside>
 
         <div>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 xl:-translate-y-1">
             <p className="text-sm text-gray-500">
               Showing {filteredProducts.length} products
             </p>

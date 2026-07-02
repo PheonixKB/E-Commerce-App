@@ -22,7 +22,7 @@ const LatestCollection = () => {
                 text2="COLLECTION"
             />
 
-            <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
+            <p className="max-w-3xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
                 Discover the latest fashion trends with our carefully curated collection of premium clothing.
                 From everyday essentials to statement pieces, explore styles designed for every season and occasion.
             </p>

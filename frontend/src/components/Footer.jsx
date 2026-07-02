@@ -7,8 +7,8 @@ const Footer = () => {
     <>
       <div className="h-4"></div>
     <footer className="bg-stone-50 border-t border-stone-300">
-      <div className="max-w-7xl mx-auto px-6 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[3fr_1fr_1fr_2fr] gap-16 text-md sm:text-base lg:text-lg text-gray-700">
+      <div className="max-w-8xl mx-auto px-6 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-[3fr_1fr_1fr_2fr] gap-16 text-sm-2 sm:text-base text-gray-700">
           <div>
             <img
               src={assets.logo}
@@ -77,9 +77,9 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-stone-300 mt-16 pt-6">
-          <p className="text-center text-gray-500 text-sm">
-            Copyright 2026 Forever. All Rights Reserved.
+        <div className="border-t border-stone-300 mt-16 h-16 w-full flex items-center justify-center">
+          <p className="text-sm text-gray-500">
+              © 2026 Forever. All Rights Reserved.
           </p>
         </div>
       </div>

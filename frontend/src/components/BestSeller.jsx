@@ -23,7 +23,7 @@ const BestSeller = () => {
                 text2="SELLERS"
             />
 
-            <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
+            <p className="max-w-3xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
                 Explore our best-selling collection of men's, women's, and children's fashion.
                 Handpicked by our customers for style, comfort, and quality.
             </p>
