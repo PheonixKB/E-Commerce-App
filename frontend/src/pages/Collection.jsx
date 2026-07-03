@@ -1,8 +1,10 @@
-import React, { useContext, useMemo, useState } from "react";
-import ProductItem from "../components/ProductItem";
+import React, { useContext, useState } from "react";
 import Title from "../components/Title";
+import ProductItem from "../components/ProductItem";
 import { assets } from "../assets/frontend_assets/assets";
 import { ShopContext } from "../context/ShopContextDefinition";
+import useFilteredProducts from "../hooks/useFilteredProducts";
+import { useSearchParams } from "react-router-dom";
 
 const categoryFilters = [
   { label: "Men", value: "Men" },
@@ -17,15 +19,21 @@ const subCategoryFilters = [
 ];
 
 const Collection = () => {
+  const [searchParams] = useSearchParams();
+  
+  const initialCategory = searchParams.get("category");
   const { products, searchQuery } = useContext(ShopContext);
-  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  const [selectedCategories, setSelectedCategories] = useState(
+    initialCategory ? [initialCategory] : [],
+  );
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [sortType, setSortType] = useState("relevant");
-  const [showFilters, setShowFilters] = useState(false);
+
   const [showAudience, setShowAudience] = useState(false);
   const [showWearType, setShowWearType] = useState(false);
 
-  const toggleFilter = (value, selectedValues, setSelectedValues) => {
+  const toggleFilter = (value, setSelectedValues) => {
     setSelectedValues((currentValues) =>
       currentValues.includes(value)
         ? currentValues.filter((item) => item !== value)
@@ -33,109 +41,33 @@ const Collection = () => {
     );
   };
 
-  const filteredProducts = useMemo(() => {
-    const normalizeWord = (word) => {
-      let w = word.toLowerCase().trim();
-
-      // Remove apostrophes
-      w = w.replace(/'/g, "");
-
-      // Normalize gender words
-      if (["man", "men", "mens"].includes(w)) return "men";
-      if (["woman", "women", "womens"].includes(w)) return "women";
-
-      // Singularize simple plurals
-      if (w.endsWith("ies")) return w.slice(0, -3) + "y";
-
-      if (w.endsWith("es") && w.length > 4) return w.slice(0, -2);
-
-      if (w.endsWith("s") && w.length > 3) return w.slice(0, -1);
-
-      return w;
-    };
-
-    const searchTerms = searchQuery
-      .trim()
-      .toLowerCase()
-      .split(/\s+/)
-      .filter(Boolean)
-      .map(normalizeWord);
-
-    const nextProducts = products.filter((product) => {
-      const searchableWords = `
-      ${product.name}
-      ${product.description}
-      ${product.category}
-      ${product.subCategory}
-    `
-        .toLowerCase()
-
-        // tshirt == t-shirt
-        .replace(/-/g, "")
-
-        // remove punctuation
-        .replace(/[^\w\s]/g, " ")
-
-        .split(/\s+/)
-
-        .filter(Boolean)
-
-        .map(normalizeWord);
-
-      const matchesSearch =
-        searchTerms.length === 0 ||
-        searchTerms.every((term) =>
-          searchableWords.some((word) => word.startsWith(term)),
-        );
-
-      const matchesCategory =
-        selectedCategories.length === 0 ||
-        selectedCategories.includes(product.category);
-
-      const matchesSubcategory =
-        selectedSubcategories.length === 0 ||
-        selectedSubcategories.includes(product.subCategory);
-
-      return matchesSearch && matchesCategory && matchesSubcategory;
-    });
-
-    return nextProducts.sort((a, b) => {
-      switch (sortType) {
-        case "price-low-high":
-          return a.price - b.price;
-
-        case "price-high-low":
-          return b.price - a.price;
-
-        default:
-          return b.date - a.date;
-      }
-    });
-  }, [
+  const filteredProducts = useFilteredProducts(
     products,
     searchQuery,
     selectedCategories,
     selectedSubcategories,
     sortType,
-  ]);
+  );
 
   return (
     <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
+      {/* Heading */}
       <div className="text-center mb-12">
         <Title text1="ALL" text2="COLLECTIONS" />
+
         <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base lg:translate-x-[260px] xl:translate-x-80 leading-7">
-          Filter by audience and age group, then sort by price to find the right
-          style faster.
+          Filter by audience and wear type, then sort by price to find the
+          perfect style faster.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 items-start">
+        {/* Sidebar */}
         <aside className="border border-stone-200 rounded-lg p-8 flex flex-col gap-6">
-          {/* Filters Heading */}
           <h2 className="text-lg font-bold text-stone-700">Filters</h2>
 
-          {/* ================= Audience ================= */}
-          <div className="border-t border-stone-200 rounded-lg pt-8">
+          {/* Audience */}
+          <div className="border-t border-stone-200 pt-8">
             <button
               type="button"
               onClick={() => setShowAudience(!showAudience)}
@@ -145,12 +77,11 @@ const Collection = () => {
                 Audience
               </h3>
 
-              {/* Hidden on Desktop */}
-              <div className="sm:hidden flex items-center">
+              <div className="sm:hidden">
                 <img
                   src={assets.dropdown_icon}
                   alt=""
-                  className={`h-3 -translate-x-2 transition-transform duration-300 ${
+                  className={`h-3 transition-transform duration-300 ${
                     showAudience ? "rotate-90" : ""
                   }`}
                 />
@@ -170,14 +101,11 @@ const Collection = () => {
                       type="checkbox"
                       checked={selectedCategories.includes(filter.value)}
                       onChange={() =>
-                        toggleFilter(
-                          filter.value,
-                          selectedCategories,
-                          setSelectedCategories,
-                        )
+                        toggleFilter(filter.value, setSelectedCategories)
                       }
                       className="h-4 w-4 accent-stone-700"
                     />
+
                     {filter.label}
                   </label>
                 ))}
@@ -185,8 +113,8 @@ const Collection = () => {
             </div>
           </div>
 
-          {/* ================= Wear Type ================= */}
-          <div className="border-t border-stone-200 rounded-lg pt-8">
+          {/* Wear Type */}
+          <div className="border-t border-stone-200 pt-8">
             <button
               type="button"
               onClick={() => setShowWearType(!showWearType)}
@@ -196,12 +124,11 @@ const Collection = () => {
                 Wear Type
               </h3>
 
-              {/* Hidden on Desktop */}
-              <div className="sm:hidden flex items-center">
+              <div className="sm:hidden">
                 <img
                   src={assets.dropdown_icon}
                   alt=""
-                  className={`h-3 -translate-x-2 transition-transform duration-300 ${
+                  className={`h-3 transition-transform duration-300 ${
                     showWearType ? "rotate-90" : ""
                   }`}
                 />
@@ -221,14 +148,11 @@ const Collection = () => {
                       type="checkbox"
                       checked={selectedSubcategories.includes(filter.value)}
                       onChange={() =>
-                        toggleFilter(
-                          filter.value,
-                          selectedSubcategories,
-                          setSelectedSubcategories,
-                        )
+                        toggleFilter(filter.value, setSelectedSubcategories)
                       }
                       className="h-4 w-4 accent-stone-700"
                     />
+
                     {filter.label}
                   </label>
                 ))}
@@ -237,17 +161,17 @@ const Collection = () => {
           </div>
         </aside>
 
+        {/* Products */}
         <div>
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8 xl:-translate-y-1">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <p className="text-sm text-gray-500">
               Showing {filteredProducts.length} products
             </p>
 
             <select
               value={sortType}
-              onChange={(event) => setSortType(event.target.value)}
+              onChange={(e) => setSortType(e.target.value)}
               className="w-full sm:w-56 border border-stone-300 rounded-md px-4 py-3 text-sm text-gray-700 outline-none focus:border-stone-700"
-              aria-label="Sort products"
             >
               <option value="relevant">Sort by: Newest</option>
               <option value="price-low-high">Price: Low to High</option>
@@ -257,13 +181,13 @@ const Collection = () => {
 
           {filteredProducts.length > 0 ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-              {filteredProducts.map((item) => (
+              {filteredProducts.map((product) => (
                 <ProductItem
-                  key={item._id}
-                  id={item._id}
-                  image={item.image}
-                  name={item.name}
-                  price={item.price}
+                  key={product._id}
+                  id={product._id}
+                  image={product.image}
+                  name={product.name}
+                  price={product.price}
                 />
               ))}
             </div>
