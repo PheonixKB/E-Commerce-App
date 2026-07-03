@@ -35,23 +35,31 @@ const Collection = () => {
 
   const filteredProducts = useMemo(() => {
     const normalizeWord = (word) => {
-      const w = word.toLowerCase();
+      let w = word.toLowerCase().trim();
 
-      switch (w) {
-        case "man":
-        case "men":
-          return "men";
+      // Remove apostrophes
+      w = w.replace(/'/g, "");
 
-        case "woman":
-        case "women":
-          return "women";
+      // Normalize gender words
+      if (["man", "men", "mens"].includes(w)) return "men";
+      if (["woman", "women", "womens"].includes(w)) return "women";
 
-        default:
-          return w;
-      }
+      // Singularize simple plurals
+      if (w.endsWith("ies")) return w.slice(0, -3) + "y";
+
+      if (w.endsWith("es") && w.length > 4) return w.slice(0, -2);
+
+      if (w.endsWith("s") && w.length > 3) return w.slice(0, -1);
+
+      return w;
     };
 
-    const searchTerm = normalizeWord(searchQuery.trim());
+    const searchTerms = searchQuery
+      .trim()
+      .toLowerCase()
+      .split(/\s+/)
+      .filter(Boolean)
+      .map(normalizeWord);
 
     const nextProducts = products.filter((product) => {
       const searchableWords = `
@@ -61,13 +69,24 @@ const Collection = () => {
       ${product.subCategory}
     `
         .toLowerCase()
+
+        // tshirt == t-shirt
+        .replace(/-/g, "")
+
+        // remove punctuation
         .replace(/[^\w\s]/g, " ")
+
         .split(/\s+/)
+
         .filter(Boolean)
+
         .map(normalizeWord);
 
       const matchesSearch =
-        searchTerm === "" || searchableWords.includes(searchTerm);
+        searchTerms.length === 0 ||
+        searchTerms.every((term) =>
+          searchableWords.some((word) => word.startsWith(term)),
+        );
 
       const matchesCategory =
         selectedCategories.length === 0 ||
@@ -80,18 +99,25 @@ const Collection = () => {
       return matchesSearch && matchesCategory && matchesSubcategory;
     });
 
-    return [...nextProducts].sort((a, b) => {
-      if (sortType === "price-low-high") {
-        return a.price - b.price;
-      }
+    return nextProducts.sort((a, b) => {
+      switch (sortType) {
+        case "price-low-high":
+          return a.price - b.price;
 
-      if (sortType === "price-high-low") {
-        return b.price - a.price;
-      }
+        case "price-high-low":
+          return b.price - a.price;
 
-      return b.date - a.date;
+        default:
+          return b.date - a.date;
+      }
     });
-  }, [products, searchQuery, selectedCategories, selectedSubcategories, sortType]);
+  }, [
+    products,
+    searchQuery,
+    selectedCategories,
+    selectedSubcategories,
+    sortType,
+  ]);
 
   return (
     <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
