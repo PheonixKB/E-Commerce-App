@@ -77,6 +77,7 @@ const Product = () => {
 
         <ProductDetails product={product} />
 
+
         {/* ================= Related Products ================= */}
 
         <RelatedProducts products={relatedProducts} />

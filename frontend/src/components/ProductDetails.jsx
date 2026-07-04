@@ -13,12 +13,12 @@ const ProductDetails = ({ product }) => {
     switch (activeTab) {
       case "Description":
         return (
-          <div className="space-y-5">
-            <p className="text-gray-600 leading-8">
+          <div className="flex flex-col gap-2 space-y-5 text-gray-600 leading-8">
+            <p>
               {product.description}
             </p>
 
-            <p className="text-gray-600 leading-8">
+            <p>
               This {product.name.toLowerCase()} is crafted using premium-quality
               fabric to provide excellent durability and all-day comfort.
               Designed with a modern fit, it features practical pockets,
@@ -56,7 +56,7 @@ const ProductDetails = ({ product }) => {
   };
 
   return (
-    <section className="mt-20 flex flex-col gap-2 max-w-8xl">
+    <section className="mt-20">
 
       {/* ================= Tabs ================= */}
 
@@ -80,7 +80,7 @@ const ProductDetails = ({ product }) => {
 
       {/* ================= Content ================= */}
 
-      <div className="pt-8 max-w-4xl">
+      <div className="pt-8 max-w-5xl">
 
         {renderContent()}
 
