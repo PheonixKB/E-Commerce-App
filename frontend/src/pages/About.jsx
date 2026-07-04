@@ -4,13 +4,12 @@ import Title from "../components/Title";
 
 const About = () => {
   return (
-    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16">
-
+    <section className="flex flex-col gap-10 max-w-8xl mx-auto px-5 sm:px-6 lg:px-8 py-16">
       {/* Page Title */}
       <div className="text-center mb-16">
         <Title text1="ABOUT" text2="US" />
 
-        <p className="max-w-3xl mx-auto mt-6 text-gray-500 leading-8">
+        <p className="max-w-4xl mx-auto mt-6 text-gray-500 leading-8 lg:translate-x-[140px] xl:translate-x-80">
           Welcome to Forever, your trusted destination for stylish and
           affordable fashion. We believe everyone deserves clothing that
           combines quality, comfort, and timeless design.
@@ -19,7 +18,6 @@ const About = () => {
 
       {/* About Section */}
       <div className="grid lg:grid-cols-2 gap-14 items-center">
-
         {/* Image */}
         <div>
           <img
@@ -30,28 +28,26 @@ const About = () => {
         </div>
 
         {/* Content */}
-        <div className="space-y-6 text-gray-600 leading-8">
+        <div className="flex flex-col gap-4 text-gray-600 leading-8">
+          <div className="space-y-4">
+            <h2 className="text-3xl font-semibold text-stone-800">Our Story</h2>
+            <p>
+              Forever was created with a simple vision — to make fashion
+              accessible to everyone. Whether you're shopping for everyday
+              essentials, seasonal collections, or statement outfits, we bring
+              together carefully selected styles for men, women, and children.
+            </p>
 
-          <h2 className="text-3xl font-semibold text-stone-800">
-            Our Story
-          </h2>
-
-          <p>
-            Forever was created with a simple vision — to make fashion
-            accessible to everyone. Whether you're shopping for everyday
-            essentials, seasonal collections, or statement outfits, we bring
-            together carefully selected styles for men, women, and children.
-          </p>
-
-          <p>
-            We work closely with trusted manufacturers to ensure every product
-            meets our standards for quality, comfort, and durability. Every
-            collection is thoughtfully curated to help you express your unique
-            style with confidence.
-          </p>
+            <p>
+              We work closely with trusted manufacturers to ensure every product
+              meets our standards for quality, comfort, and durability. Every
+              collection is thoughtfully curated to help you express your unique
+              style with confidence.
+            </p>
+          </div>
 
           <div>
-            <h3 className="text-xl font-semibold text-stone-800 mb-3">
+            <h3 className="text-2xl font-semibold text-stone-800 mb-3">
               Our Mission
             </h3>
 
@@ -62,20 +58,16 @@ const About = () => {
               we're committed to making online shopping simple and enjoyable.
             </p>
           </div>
-
         </div>
-
       </div>
 
       {/* Why Choose Us */}
-      <div className="mt-24">
-
+      <div className="flex flex-col gap-2">
         <div className="text-center mb-12">
           <Title text1="WHY" text2="CHOOSE US" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-8">
-
           <div className="border border-stone-200 rounded-xl p-8 text-center hover:shadow-lg transition">
             <h3 className="text-xl font-semibold mb-4 text-stone-800">
               Premium Quality
@@ -108,11 +100,8 @@ const About = () => {
               step of the way.
             </p>
           </div>
-
         </div>
-
       </div>
-
     </section>
   );
 };
