@@ -32,7 +32,7 @@ const ProductInfo = ({ product }) => {
 
   const handleAddToCart = () => {
     // Change this if your addToCart function accepts quantity.
-    addToCart(product._id, selectedSize);
+    addToCart(product._id, selectedSize, quantity);
   };
 
   return (

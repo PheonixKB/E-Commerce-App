@@ -16,6 +16,7 @@ const Navbar = () => {
             : "after:w-0 hover:after:w-full hover:text-stone-600"
         }`;
   const { showSearch, setShowSearch } = useContext(ShopContext);
+  const { getCartCount } = useContext(ShopContext);
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-sm">
@@ -75,7 +76,7 @@ const Navbar = () => {
                   className="cursor-pointer text-stone-700 hover:text-stone-900 transition"
                 />
                 <p className="absolute -top-1 -right-2 bg-stone-800 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  0
+                  {getCartCount()}
                 </p>
               </Link>
 
