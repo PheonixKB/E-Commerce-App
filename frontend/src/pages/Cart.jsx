@@ -38,7 +38,7 @@ const Cart = () => {
   const total = subtotal + (subtotal > 0 ? delivery_fee : 0);
 
   return (
-    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
+    <section className="max-w-8xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
 
       {/* Heading */}
       <div className="mb-10">
