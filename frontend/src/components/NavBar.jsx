@@ -3,18 +3,19 @@ import { Search, Heart, ShoppingCart, User, MenuIcon, X } from "lucide-react";
 import { assets } from "../assets/frontend_assets/assets.js";
 import { useState, useContext } from "react";
 import { ShopContext } from "../context/ShopContextDefinition";
+import LoginPopup from "../pages/Login";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
   const navLinkClass = ({ isActive }) =>
     `relative pb-1 text-stone-700
-        after:content-[''] after:absolute after:left-0 after:-bottom-1
-        after:h-[2px] after:bg-stone-600 after:transition-all after:duration-300
-        ${
-          isActive
-            ? "after:w-full text-stone-600"
-            : "after:w-0 hover:after:w-full hover:text-stone-600"
-        }`;
+  after:content-[''] after:absolute after:left-0 after:-bottom-1
+  after:h-[2px] after:bg-stone-600 after:transition-all after:duration-300
+  ${
+    isActive
+      ? "after:w-full text-stone-600"
+      : "after:w-0 hover:after:w-full hover:text-stone-600"
+  }`;
   const { showSearch, setShowSearch } = useContext(ShopContext);
   const { getCartCount } = useContext(ShopContext);
   return (
@@ -60,6 +61,7 @@ const Navbar = () => {
 
             {/* Right Icons */}
             <div className="flex items-right xl:translate-x-48 gap-4">
+              {/* Search Icon */}
               <button
                 onClick={() =>
                   showSearch ? setShowSearch(false) : setShowSearch(true)
@@ -69,7 +71,10 @@ const Navbar = () => {
                 <Search size={22} className="text-stone-700" />
               </button>
 
+              {/* Wishlist Icon */}
               <Heart size={22} className="text-stone-700" />
+
+              {/* Cart Icon */}
               <Link to="/cart" className="relative">
                 <ShoppingCart
                   size={22}
@@ -80,12 +85,17 @@ const Navbar = () => {
                 </p>
               </Link>
 
+              {/* User Icon */}
               <User size={22} className="text-stone-700" />
-              <Link to="/login">
+
+              {/* Login Button*/}
+              <Link to="/login" className="hidden md:block">
                 <button className="bg-stone-700 text-white px-5 py-2 rounded-lg hover:bg-stone-900 transition">
                   Login
                 </button>
               </Link>
+
+              {/* Mobile Menu Button */}
               <button className="md:hidden" onClick={() => setVisible(true)}>
                 <MenuIcon
                   size={22}
