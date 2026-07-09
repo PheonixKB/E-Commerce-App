@@ -10,3 +10,18 @@ body{
   font-weight: 400;
   font-style: normal;
 }
+
+/* Animation for invalid email in about us page */
+@keyframes toastProgress {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+.animate-toast {
+    animation: toastProgress 4s linear forwards;
+}
