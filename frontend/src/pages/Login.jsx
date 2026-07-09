@@ -57,7 +57,7 @@ const Login = () => {
 
         <div className="flex items-center justify-center px-6 py-12">
 
-          <div className="w-full max-w-md">
+          <div className="flex flex-col gap-2 w-full max-w-lg">
 
             <p className="mb-2 text-sm uppercase tracking-[5px] text-stone-500">
               Welcome Back
@@ -74,7 +74,7 @@ const Login = () => {
 
             {/* Form */}
 
-            <form className="mt-10 space-y-6">
+            <form className="flex flex-col gap-6">
 
               <AuthInput
                 label="Email Address"
