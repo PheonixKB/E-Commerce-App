@@ -1,15 +1,16 @@
 import React from "react";
 import Title from "../components/Title";
 import { assets } from "../assets/frontend_assets/assets";
+import NewsletterBox from "../components/NewsletterBox";
 
 const Contact = () => {
   return (
-    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-16">
+    <section className="flex flex-col gap-4 max-w-8xl mx-auto px-5 sm:px-6 lg:px-8 py-16">
       {/* Page Title */}
-      <div className="text-center mb-16 lg:translate-x-10 xl:translate-x-40">
+      <div className="text-center mb-16">
         <Title text1="CONTACT" text2="US" />
 
-        <p className="max-w-3xl mx-auto mt-6 text-gray-500 leading-8 lg:translate-x-50 xl:translate-x-64">
+        <p className="max-w-8xl mx-auto mt-6 text-gray-500 leading-8">
           We'd love to hear from you. Whether you have a question about our
           products, orders, shipping, or anything else, our team is always ready
           to help.
@@ -79,12 +80,17 @@ const Contact = () => {
                 future of fashion.
               </p>
             </div>
-            <button className="border border-stone-700 px-8 py-3 rounded-lg text-stone-700 hover:bg-stone-700 hover:text-white transition-all duration-300">
+            <div className="text-center">
+            <button className="w-30 h-10 border border-stone-700 px-8 py-3 rounded-lg text-stone-700 hover:bg-stone-700 hover:text-white transition-all duration-300">
               Explore Jobs
             </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* News Letter Box */}
+      <NewsletterBox />
     </section>
   );
 };
