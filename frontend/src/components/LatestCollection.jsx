@@ -10,19 +10,19 @@ const LatestCollection = () => {
         setLatestProducts(products.slice(0,10));
     },[products])
   return (
-    <section>
+    <section className='max-w-8xl'>
 
         {/* ===========================
             Section Heading
         =========================== */}
-        <div className="max-w-3xl mx-auto lg:translate-x-48 xl:translate-x-96 text-center mb-12">
+        <div className="w-full mx-auto text-center mb-12">
 
             <Title
                 text1="LATEST"
                 text2="COLLECTION"
             />
 
-            <p className="max-w-3xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
+            <p className="mx-auto mt-5 text-gray-500 text-sm sm:text-base leading-8">
                 Discover the latest fashion trends with our carefully curated collection of premium clothing.
                 From everyday essentials to statement pieces, explore styles designed for every season and occasion.
             </p>
@@ -32,7 +32,7 @@ const LatestCollection = () => {
         {/* ===========================
             Latest Collection Products
         =========================== */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(4,220px)] xl:grid-cols-[repeat(5,220px)] justify-center gap-8 justify-items-center lg:translate-x-16 xl:translate-x-24">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(4,220px)] xl:grid-cols-[repeat(5,220px)] justify-center gap-8 justify-items-center">
 
             {latestProducts.map((item) => (
                 <ProductItem

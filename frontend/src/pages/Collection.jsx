@@ -50,12 +50,12 @@ const Collection = () => {
   );
 
   return (
-    <section className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
+    <section className="max-w-8xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
       {/* Heading */}
       <div className="text-center mb-12">
         <Title text1="ALL" text2="COLLECTIONS" />
 
-        <p className="max-w-2xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base lg:translate-x-[260px] xl:translate-x-80 leading-7">
+        <p className="max-w-8xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
           Filter by audience and wear type, then sort by price to find the
           perfect style faster.
         </p>
@@ -63,7 +63,7 @@ const Collection = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 items-start">
         {/* Sidebar */}
-        <aside className="border border-stone-200 rounded-lg p-8 flex flex-col gap-6">
+        <aside className="flex flex-col gap-6 border border-stone-200 rounded-lg p-8 translate-x-2">
           <h2 className="text-lg font-bold text-stone-700">Filters</h2>
 
           {/* Audience */}
@@ -164,14 +164,14 @@ const Collection = () => {
         {/* Products */}
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <p className="text-sm text-gray-500">
+            <p className="text-sm text-gray-500 translate-x-10">
               Showing {filteredProducts.length} products
             </p>
 
             <select
               value={sortType}
               onChange={(e) => setSortType(e.target.value)}
-              className="w-full sm:w-56 border border-stone-300 rounded-md px-4 py-3 text-sm text-gray-700 outline-none focus:border-stone-700"
+              className="w-full sm:w-56 border border-stone-300 rounded-md px-4 py-3 text-sm text-gray-700 outline-none focus:border-stone-700 -translate-x-8 -translate-y-2"
             >
               <option value="relevant">Sort by: Newest</option>
               <option value="price-low-high">Price: Low to High</option>

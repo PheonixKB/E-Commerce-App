@@ -11,19 +11,19 @@ const BestSeller = () => {
         setBestSeller(bestProduct.slice(0, 5));
     }, [products]);
   return (
-    <section>
+    <section className='max-w-8xl'>
 
         {/* ===========================
             Section Heading
         =========================== */}
-        <div className="max-w-3xl mx-auto lg:translate-x-48 xl:translate-x-96 text-center mb-12">
+        <div className="mx-auto text-center mb-12">
 
             <Title
                 text1="BEST"
                 text2="SELLERS"
             />
 
-            <p className="max-w-3xl mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
+            <p className="mx-auto mt-5 text-center text-gray-500 text-sm sm:text-base leading-7">
                 Explore our best-selling collection of men's, women's, and children's fashion.
                 Handpicked by our customers for style, comfort, and quality.
             </p>
@@ -33,7 +33,7 @@ const BestSeller = () => {
         {/* ===========================
             Best Seller Products
         =========================== */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(4,220px)] xl:grid-cols-[repeat(5,220px)] justify-center gap-8 justify-items-center lg:translate-x-16 xl:translate-x-24">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-[repeat(4,220px)] xl:grid-cols-[repeat(5,220px)] justify-center gap-8 justify-items-center">
 
             {bestSeller.map((item) => (
                 <ProductItem

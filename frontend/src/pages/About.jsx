@@ -2,7 +2,6 @@ import React, { useContext, useState, useRef } from "react";
 import { assets } from "../assets/frontend_assets/assets";
 import Title from "../components/Title";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
 import NewsletterBox from "../components/NewsletterBox";
 
 const About = () => {
@@ -107,6 +106,7 @@ const About = () => {
         </div>
       </div>
 
+      {/* News Letter Box */}
       <NewsletterBox />
     </section>
   );

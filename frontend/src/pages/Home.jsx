@@ -12,7 +12,7 @@ const Home = () => {
     <Hero />
 
     {/* Main Website Content */}
-    <div className="max-w-7xl mx-auto mt-20 px-5 sm:px-6 lg:px-8 flex flex-col gap-20">
+    <div className="max-w-8xl mx-auto mt-20 px-5 sm:px-6 flex flex-col gap-15">
 
         {/* Latest Collection */}
         <section>
