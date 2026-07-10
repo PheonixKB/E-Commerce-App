@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { ShopContext } from "../context/ShopContextDefinition";
 import Title from "../components/Title";
 import { Trash2 } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const {
@@ -10,36 +11,47 @@ const Cart = () => {
     removeFromCart,
     currency,
     delivery_fee,
+    startCartCheckout,
   } = useContext(ShopContext);
 
+  const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    startCartCheckout();
+    navigate("/place-order");
+  };
+
   // Convert cart object into an array for rendering
-  const cartData = [];
+  const cartData = useMemo(() => {
+    const items = [];
 
-  for (const itemId in cartItems) {
-    const product = products.find((p) => p._id === itemId);
+    for (const itemId in cartItems) {
+      const product = products.find((p) => p._id === itemId);
 
-    if (!product) continue;
+      if (!product) continue;
 
-    for (const size in cartItems[itemId]) {
-      cartData.push({
-        ...product,
-        size,
-        quantity: cartItems[itemId][size],
-      });
+      for (const size in cartItems[itemId]) {
+        items.push({
+          ...product,
+          size,
+          quantity: cartItems[itemId][size],
+        });
+      }
     }
-  }
+
+    return items;
+  }, [cartItems, products]);
 
   // Calculate subtotal
   const subtotal = cartData.reduce(
     (total, item) => total + item.price * item.quantity,
-    0
+    0,
   );
 
   const total = subtotal + (subtotal > 0 ? delivery_fee : 0);
 
   return (
     <section className="max-w-8xl mx-auto px-5 sm:px-6 lg:px-8 py-12">
-
       {/* Heading */}
       <div className="mb-10">
         <Title text1="YOUR" text2="CART" />
@@ -53,7 +65,6 @@ const Cart = () => {
         <>
           {/* Cart Items */}
           <div className="space-y-6">
-
             {cartData.map((item) => (
               <div
                 key={`${item._id}-${item.size}`}
@@ -61,7 +72,6 @@ const Cart = () => {
               >
                 {/* Left */}
                 <div className="flex items-center gap-5">
-
                   <img
                     src={item.image[0]}
                     alt={item.name}
@@ -69,54 +79,34 @@ const Cart = () => {
                   />
 
                   <div>
+                    <h2 className="text-lg font-semibold">{item.name}</h2>
 
-                    <h2 className="text-lg font-semibold">
-                      {item.name}
-                    </h2>
-
-                    <p className="text-gray-500 mt-1">
-                      Size: {item.size}
-                    </p>
+                    <p className="text-gray-500 mt-1">Size: {item.size}</p>
 
                     <p className="mt-2 font-medium">
                       {currency}
                       {item.price}
                     </p>
-
                   </div>
-
                 </div>
 
                 {/* Right */}
                 <div className="flex items-center gap-8">
+                  <span className="font-medium">Qty: {item.quantity}</span>
 
-                  <span className="font-medium">
-                    Qty: {item.quantity}
-                  </span>
-
-                  <button
-                    onClick={() =>
-                      removeFromCart(item._id, item.size)
-                    }
-                  >
+                  <button onClick={() => removeFromCart(item._id, item.size)}>
                     <Trash2 className="text-red-500 hover:text-red-700" />
                   </button>
-
                 </div>
               </div>
             ))}
-
           </div>
 
           {/* Totals */}
 
           <div className="mt-16 flex justify-end">
-
             <div className="w-full max-w-md border border-stone-200 rounded-lg p-8">
-
-              <h2 className="text-xl font-semibold mb-6">
-                Cart Total
-              </h2>
+              <h2 className="text-xl font-semibold mb-6">Cart Total</h2>
 
               <div className="flex justify-between py-3 border-b">
                 <span>Subtotal</span>
@@ -141,13 +131,13 @@ const Cart = () => {
                   {total}
                 </span>
               </div>
-
-              <button className="mt-6 w-full bg-stone-700 text-white py-3 rounded-md hover:bg-stone-900 transition">
+              <button
+                onClick={handleCheckout}
+                className="mt-6 w-full rounded-md bg-stone-700 py-3 text-white transition hover:bg-stone-900"
+              >
                 Proceed to Checkout
               </button>
-
             </div>
-
           </div>
         </>
       )}
