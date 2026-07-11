@@ -96,8 +96,13 @@ const Navbar = () => {
                 />
               </Link>
 
-              {/* User Icon */}
-              <User size={22} className="text-stone-700" />
+              {/* Profile Icon */}
+              <Link to="/profile" aria-label="Your profile">
+                <User
+                  size={22}
+                  className="cursor-pointer text-stone-700 hover:text-stone-900 transition"
+                />
+              </Link>
 
               {/* Login Button*/}
               <Link to="/login" className="hidden md:block">
@@ -239,6 +244,26 @@ const Navbar = () => {
               }
             >
               Orders
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/profile"
+              onClick={() => setVisible(false)}
+              className={({ isActive }) =>
+                `relative block w-full py-3 text-center text-stone-700
+                            after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2
+                            after:bottom-0 after:h-[2px] after:bg-stone-600
+                            after:transition-all after:duration-300
+                            ${
+                              isActive
+                                ? "after:w-14 text-stone-600"
+                                : "after:w-0 hover:after:w-14 hover:text-stone-600"
+                            }`
+              }
+            >
+              Profile
             </NavLink>
           </li>
         </ul>

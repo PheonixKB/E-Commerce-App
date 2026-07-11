@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useProductContext } from "../context/product/ProductContext";
 import { useCheckoutContext } from "../context/checkout/CheckoutContext";
 import { useCartContext } from "../context/cart/CartContext";
+import { useProfileContext } from "../context/profile/ProfileContext";
 import { useToastContext } from "../context/toast/ToastContext";
 
 import CheckoutStepper from "../components/CheckoutStepper";
@@ -33,6 +34,7 @@ const PlaceOrder = () => {
   const { productMap } = useProductContext();
   const { checkout, setCheckout, setOrders } = useCheckoutContext();
   const { removeOrderedItemsFromCart } = useCartContext();
+  const { profile } = useProfileContext();
   const { showToast } = useToastContext();
 
   // Tracks whether we're leaving this page because an order was just
@@ -61,15 +63,15 @@ const PlaceOrder = () => {
   // -----------------------------
 
   const [address, setAddress] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    street: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    country: "",
+    firstName: profile.firstName || "",
+    lastName: profile.lastName || "",
+    email: profile.email || "",
+    phone: profile.phone || "",
+    street: profile.street || "",
+    city: profile.city || "",
+    state: profile.state || "",
+    zipCode: profile.zipCode || "",
+    country: profile.country || "",
   });
 
   // -----------------------------
