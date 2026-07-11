@@ -1,9 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { ShopContext } from "../context/ShopContextDefinition";
+import { useUIContext } from "../context/ui/UIContext";
+
 
 const ProductItem = ({ id, image, name, price }) => {
-  const { currency } = useContext(ShopContext);
+  const { currency } = useUIContext();
 
   const productImage = Array.isArray(image) ? image[0] : image;
 

@@ -29,9 +29,13 @@ const Footer = () => {
                   About Us
                 </Link>
               </li>
-              <li>Careers</li>
-              <li>Our Story</li>
-              <li>Privacy Policy</li>
+              {/* Not yet implemented — muted so they read as
+                  "coming soon" instead of looking like broken links */}
+              <li className="text-gray-400 cursor-default">Careers</li>
+              <li className="text-gray-400 cursor-default">Our Story</li>
+              <li className="text-gray-400 cursor-default">
+                Privacy Policy
+              </li>
             </ul>
           </div>
 

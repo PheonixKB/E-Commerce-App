@@ -1,44 +1,26 @@
-import React, { useState, useRef } from "react";
-import Toast from "../components/Toast";
-
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useToastContext } from "../context/toast/ToastContext";
+
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const NewsletterBox = () => {
   const navigate = useNavigate();
+  const { showToast } = useToastContext();
   const [email, setEmail] = useState("");
-  const toastTimer = useRef(null);
-  const showToast = (message, type = "error") => {
-    if (toastTimer.current) {
-      clearTimeout(toastTimer.current);
-    }
 
-    setToast({
-      show: true,
-      message,
-      type,
-    });
-
-    toastTimer.current = setTimeout(() => {
-      setToast((prev) => ({
-        ...prev,
-        show: false,
-      }));
-    }, 4000);
-  };
   const handleSubscribe = () => {
     const trimmedEmail = email.trim();
 
     // Empty email
     if (!trimmedEmail) {
-      showToast("Email address cannot be empty.");
+      showToast("Email address cannot be empty.", "error");
       return;
     }
 
     // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(trimmedEmail)) {
-      showToast("Please enter a valid email address.");
+    if (!EMAIL_REGEX.test(trimmedEmail)) {
+      showToast("Please enter a valid email address.", "error");
       return;
     }
 
@@ -53,11 +35,7 @@ const NewsletterBox = () => {
       });
     }, 800);
   };
-  const [toast, setToast] = useState({
-    show: false,
-    message: "",
-    type: "error",
-  });
+
   return (
     <div className="flex flex-col gap-5 max-w-8xl mt-24 pt-20">
       <div className="border-t border-stone-200"></div>
@@ -89,17 +67,6 @@ const NewsletterBox = () => {
           </button>
         </div>
       </div>
-      <Toast
-        show={toast.show}
-        message={toast.message}
-        type={toast.type}
-        onClose={() =>
-          setToast((prev) => ({
-            ...prev,
-            show: false,
-          }))
-        }
-      />
     </div>
   );
 };

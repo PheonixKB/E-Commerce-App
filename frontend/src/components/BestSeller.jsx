@@ -1,15 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { ShopContext } from '../context/ShopContextDefinition'
+import React, { useMemo } from 'react'
+import { useProductContext } from '../context/product/ProductContext';
 import Title from './Title';
 import ProductItem from './ProductItem';
 
 const BestSeller = () => {
-    const {products}=useContext(ShopContext);
-    const [bestSeller,setBestSeller]=useState([]);
-    useEffect(() => {
-        const bestProduct = products.filter((item) => item.bestseller);
-        setBestSeller(bestProduct.slice(0, 5));
+    const { products } = useProductContext();
+
+    const bestSeller = useMemo(() => {
+        return products.filter((item) => item.bestseller).slice(0, 5);
     }, [products]);
+
   return (
     <section className='max-w-8xl'>
 

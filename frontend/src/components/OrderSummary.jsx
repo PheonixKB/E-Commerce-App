@@ -1,7 +1,8 @@
 import React, { useContext, useMemo } from "react";
 import { ArrowRight } from "lucide-react";
+import { useUIContext } from "../context/ui/UIContext";
 
-import { ShopContext } from "../context/ShopContextDefinition";
+
 
 const OrderSummary = ({
   cartItems,
@@ -10,7 +11,7 @@ const OrderSummary = ({
   deliveryMethod,
   onPlaceOrder,
 }) => {
-  const { currency, delivery_fee } = useContext(ShopContext);
+  const { currency, delivery_fee } = useUIContext();
 
   const orderedItems = useMemo(() => {
     const items = [];

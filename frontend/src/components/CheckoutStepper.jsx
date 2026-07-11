@@ -5,7 +5,6 @@ const steps = ["Address", "Delivery", "Payment", "Review"];
 const CheckoutStepper = ({ currentStep }) => {
   return (
     <div className="mb-16">
-      <CheckoutStepper currentStep={currentStep} />;
       <div className="flex items-center justify-between">
         {steps.map((step, index) => {
           const completed = currentStep > index + 1;

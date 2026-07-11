@@ -1,18 +1,17 @@
-import React, { useContext } from "react";
-import { ShopContext } from "../context/ShopContextDefinition";
+import React, { useMemo } from "react";
+import { useProductContext } from "../context/product/ProductContext";
+import { useCartContext } from "../context/cart/CartContext";
+import { useUIContext } from "../context/ui/UIContext";
+import { useCheckoutContext } from "../context/checkout/CheckoutContext";
 import Title from "../components/Title";
 import { Trash2 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
-  const {
-    products,
-    cartItems,
-    removeFromCart,
-    currency,
-    delivery_fee,
-    startCartCheckout,
-  } = useContext(ShopContext);
+  const { products } = useProductContext();
+  const { cartItems, removeFromCart } = useCartContext();
+  const { currency, delivery_fee } = useUIContext();
+  const { startCartCheckout } = useCheckoutContext();
 
   const navigate = useNavigate();
 

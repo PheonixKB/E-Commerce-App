@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
 
-import { ShopContext } from "../context/ShopContextDefinition";
+import { useProductContext } from "../context/product/ProductContext";
 import useProduct from "../hooks/useProduct";
 
 import ProductGallery from "../components/ProductGallery";
@@ -13,7 +12,7 @@ import RelatedProducts from "../components/RelatedProducts";
 const Product = () => {
   const { productID } = useParams();
 
-  const { products } = useContext(ShopContext);
+  const { products } = useProductContext();
 
   const { product, relatedProducts } = useProduct(products, productID);
 

@@ -1,7 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { ShopContext } from "../context/ShopContextDefinition";
+import { useProductContext } from "../context/product/ProductContext";
+import { useCheckoutContext } from "../context/checkout/CheckoutContext";
+import { useCartContext } from "../context/cart/CartContext";
+import { useToastContext } from "../context/toast/ToastContext";
 
 import CheckoutStepper from "../components/CheckoutStepper";
 import AddressForm from "../components/AddressForm";
@@ -10,17 +13,38 @@ import PaymentMethod from "../components/PaymentMethod";
 import ReviewOrder from "../components/ReviewOrder";
 import { DELIVERY_OPTIONS, PAYMENT_OPTIONS } from "../constants/Checkout";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+const REQUIRED_ADDRESS_FIELDS = [
+  "firstName",
+  "lastName",
+  "email",
+  "phone",
+  "street",
+  "city",
+  "state",
+  "zipCode",
+  "country",
+];
+
 const PlaceOrder = () => {
   const navigate = useNavigate();
 
-  const {
-    products,
+  const { productMap } = useProductContext();
+  const { checkout, setCheckout, setOrders } = useCheckoutContext();
+  const { removeOrderedItemsFromCart } = useCartContext();
+  const { showToast } = useToastContext();
 
-    checkout,
-    setCheckout,
-  } = useContext(ShopContext);
+  // Tracks whether we're leaving this page because an order was just
+  // placed, as opposed to someone landing here with nothing in checkout.
+  // Without this, clearing `checkout` inside placeOrder() would make this
+  // guard effect fire and redirect to /cart right after we navigate to
+  // /orders, since both are reacting to the same state change.
+  const orderPlacedRef = useRef(false);
 
   useEffect(() => {
+    if (orderPlacedRef.current) return;
+
     if (!checkout || checkout.items.length === 0) {
       navigate("/cart", { replace: true });
     }
@@ -62,6 +86,29 @@ const PlaceOrder = () => {
   };
 
   // -----------------------------
+  // Address Validation
+  // -----------------------------
+
+  const isAddressValid = () => {
+    for (const field of REQUIRED_ADDRESS_FIELDS) {
+      if (!address[field]?.trim()) {
+        showToast(
+          `Please fill in your ${field.replace(/([A-Z])/g, " $1").toLowerCase()}.`,
+          "error",
+        );
+        return false;
+      }
+    }
+
+    if (!EMAIL_REGEX.test(address.email)) {
+      showToast("Please enter a valid email address.", "error");
+      return false;
+    }
+
+    return true;
+  };
+
+  // -----------------------------
   // Delivery
   // -----------------------------
 
@@ -78,6 +125,11 @@ const PlaceOrder = () => {
   // -----------------------------
 
   const nextStep = () => {
+    // Gate step 1 -> 2 on valid address data.
+    if (currentStep === 1 && !isAddressValid()) {
+      return;
+    }
+
     if (currentStep < 4) {
       setCurrentStep((prev) => prev + 1);
 
@@ -98,16 +150,6 @@ const PlaceOrder = () => {
       });
     }
   };
-
-  // -----------------------------
-  // Product Lookup Map
-  // -----------------------------
-
-  const productMap = React.useMemo(() => {
-    return Object.fromEntries(
-      products.map((product) => [product._id, product]),
-    );
-  }, [products]);
 
   // -----------------------------
   // Helper Functions
@@ -271,30 +313,35 @@ const PlaceOrder = () => {
   // -----------------------------
 
   const placeOrder = () => {
+    orderPlacedRef.current = true;
+
     const order = buildOrder();
-    const existingOrders = JSON.parse(localStorage.getItem("orders")) || [];
 
-    localStorage.setItem("orders", JSON.stringify([order, ...existingOrders]));
+    // Save through context state — CheckoutProvider already persists
+    // `orders` to localStorage in its own effect, so this is the single
+    // source of truth instead of writing to localStorage directly here.
+    setOrders((prevOrders) => [order, ...prevOrders]);
 
-    console.log("Order Created:", order);
-
-    // TODO:
-    // Save order to backend or localStorage.
+    // Remove exactly the items that were just ordered from the cart.
+    // This is a no-op for Buy Now orders (those items were never in the
+    // cart to begin with), and correctly leaves alone anything else the
+    // person added to their cart during checkout.
+    removeOrderedItemsFromCart(checkout.items);
 
     // Only clear the checkout session.
-    // Do NOT modify the cart here.
     setCheckout({
       source: "",
       items: [],
     });
 
-    navigate("/orders");
+    navigate("/orders", { replace: true });
   };
-  const orderedItems = React.useMemo(() => {
-    return buildOrderedItems();
-  }, [checkout, products]);
 
-  const pricing = React.useMemo(() => {
+  const orderedItems = useMemo(() => {
+    return buildOrderedItems();
+  }, [checkout, productMap]);
+
+  const pricing = useMemo(() => {
     return calculatePricing(orderedItems);
   }, [orderedItems, deliveryMethod]);
 

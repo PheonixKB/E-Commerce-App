@@ -1,9 +1,9 @@
 import { Link, NavLink } from "react-router-dom";
-import { Search, Heart, ShoppingCart, User, MenuIcon, X } from "lucide-react";
+import { Search, Heart, ShoppingCart, Package, User, MenuIcon, X } from "lucide-react";
 import { assets } from "../assets/frontend_assets/assets.js";
-import { useState, useContext } from "react";
-import { ShopContext } from "../context/ShopContextDefinition";
-import LoginPopup from "../pages/Login";
+import { useState } from "react";
+import { useUIContext } from "../context/ui/UIContext.js";
+import { useCartContext } from "../context/cart/CartContext.js";
 
 const Navbar = () => {
   const [visible, setVisible] = useState(false);
@@ -16,8 +16,10 @@ const Navbar = () => {
       ? "after:w-full text-stone-600"
       : "after:w-0 hover:after:w-full hover:text-stone-600"
   }`;
-  const { showSearch, setShowSearch } = useContext(ShopContext);
-  const { getCartCount } = useContext(ShopContext);
+  const { showSearch, setShowSearch } = useUIContext();
+  const { getCartCount } = useCartContext();
+  const cartCount = getCartCount();
+
   return (
     <>
       <nav className="sticky top-0 z-50 bg-white border-b border-stone-200 shadow-sm">
@@ -60,13 +62,12 @@ const Navbar = () => {
             </ul>
 
             {/* Right Icons */}
-            <div className="flex items-right xl:translate-x-48 gap-4">
+            <div className="flex items-center gap-4">
               {/* Search Icon */}
               <button
-                onClick={() =>
-                  showSearch ? setShowSearch(false) : setShowSearch(true)
-                }
+                onClick={() => setShowSearch((prev) => !prev)}
                 className="hidden md:block"
+                aria-label={showSearch ? "Close search" : "Open search"}
               >
                 <Search size={22} className="text-stone-700" />
               </button>
@@ -80,9 +81,19 @@ const Navbar = () => {
                   size={22}
                   className="cursor-pointer text-stone-700 hover:text-stone-900 transition"
                 />
-                <p className="absolute -top-1 -right-2 bg-stone-800 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
-                  {getCartCount()}
-                </p>
+                {cartCount > 0 && (
+                  <p className="absolute -top-1 -right-2 bg-stone-800 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                    {cartCount}
+                  </p>
+                )}
+              </Link>
+
+              {/* Orders Icon */}
+              <Link to="/orders" aria-label="Your orders">
+                <Package
+                  size={22}
+                  className="cursor-pointer text-stone-700 hover:text-stone-900 transition"
+                />
               </Link>
 
               {/* User Icon */}
@@ -96,7 +107,11 @@ const Navbar = () => {
               </Link>
 
               {/* Mobile Menu Button */}
-              <button className="md:hidden" onClick={() => setVisible(true)}>
+              <button
+                className="md:hidden"
+                onClick={() => setVisible(true)}
+                aria-label="Open menu"
+              >
                 <MenuIcon
                   size={22}
                   className="cursor-pointer text-stone-700 hover:text-stone-900 transition"
@@ -204,6 +219,26 @@ const Navbar = () => {
               }
             >
               Contact
+            </NavLink>
+          </li>
+
+          <li>
+            <NavLink
+              to="/orders"
+              onClick={() => setVisible(false)}
+              className={({ isActive }) =>
+                `relative block w-full py-3 text-center text-stone-700
+                            after:content-[''] after:absolute after:left-1/2 after:-translate-x-1/2
+                            after:bottom-0 after:h-[2px] after:bg-stone-600
+                            after:transition-all after:duration-300
+                            ${
+                              isActive
+                                ? "after:w-14 text-stone-600"
+                                : "after:w-0 hover:after:w-14 hover:text-stone-600"
+                            }`
+              }
+            >
+              Orders
             </NavLink>
           </li>
         </ul>

@@ -1,76 +1,41 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Package, Truck, CheckCircle2, Clock3 } from "lucide-react";
 
 import Title from "../components/Title";
-import { ShopContext } from "../context/ShopContextDefinition";
+import { useUIContext } from "../context/ui/UIContext";
+import { useCheckoutContext } from "../context/checkout/CheckoutContext";
+
+const statusIcon = (status) => {
+  switch (status) {
+    case "Processing":
+      return <Clock3 size={18} className="text-amber-500" />;
+
+    case "Shipped":
+      return <Truck size={18} className="text-blue-500" />;
+
+    case "Delivered":
+      return <CheckCircle2 size={18} className="text-green-600" />;
+
+    default:
+      return <Package size={18} />;
+  }
+};
+
+const formatDate = (isoString) => {
+  return new Date(isoString).toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+};
 
 const Orders = () => {
-  const { currency } = useContext(ShopContext);
-
-  // Temporary data
-  const orders = [
-    {
-      id: 1,
-      name: "Men Blue Denim Jacket",
-      category: "Men",
-      subCategory: "Winterwear",
-      image:
-        "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600",
-      quantity: 1,
-      size: "M",
-      price: 350,
-      status: "Processing",
-      date: "14 Jul 2026",
-    },
-    {
-      id: 2,
-      name: "Oversized Hoodie",
-      category: "Women",
-      subCategory: "Winterwear",
-      image:
-        "https://images.unsplash.com/photo-1523398002811-999ca8dec234?w=600",
-      quantity: 2,
-      size: "L",
-      price: 499,
-      status: "Shipped",
-      date: "12 Jul 2026",
-    },
-    {
-      id: 3,
-      name: "Cotton T-Shirt",
-      category: "Men",
-      subCategory: "Topwear",
-      image:
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
-      quantity: 1,
-      size: "XL",
-      price: 199,
-      status: "Delivered",
-      date: "08 Jul 2026",
-    },
-  ];
-
-  const statusIcon = (status) => {
-    switch (status) {
-      case "Processing":
-        return <Clock3 size={18} className="text-amber-500" />;
-
-      case "Shipped":
-        return <Truck size={18} className="text-blue-500" />;
-
-      case "Delivered":
-        return <CheckCircle2 size={18} className="text-green-600" />;
-
-      default:
-        return <Package size={18} />;
-    }
-  };
+  const { currency } = useUIContext();
+  const { orders } = useCheckoutContext();
 
   return (
     <section className="max-w-7xl mx-auto px-6 lg:px-8 py-14">
-
       {/* Heading */}
-
       <div className="text-center mb-14">
         <Title text1="MY" text2="ORDERS" />
 
@@ -79,98 +44,94 @@ const Orders = () => {
         </p>
       </div>
 
-      <div className="space-y-8">
-
-        {orders.map((order) => (
-
-          <div
-            key={order.id}
-            className="border border-stone-200 rounded-2xl p-6 hover:shadow-lg transition"
-          >
-
-            <div className="flex flex-col md:flex-row gap-6">
-
-              {/* Image */}
-
-              <img
-                src={order.image}
-                alt={order.name}
-                className="w-32 h-40 rounded-xl object-cover bg-stone-100"
-              />
-
-              {/* Details */}
-
-              <div className="flex-1 flex flex-col justify-between">
-
+      {orders.length === 0 ? (
+        <div className="text-center py-20 text-gray-500">
+          <p className="text-xl">You haven't placed any orders yet.</p>
+        </div>
+      ) : (
+        <div className="space-y-8">
+          {orders.map((order) => (
+            <div
+              key={order.orderId}
+              className="border border-stone-200 rounded-2xl p-6 hover:shadow-lg transition"
+            >
+              {/* Order header */}
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-stone-100">
                 <div>
-
-                  <h2 className="text-xl font-semibold text-stone-900">
-                    {order.name}
-                  </h2>
-
-                  <p className="text-sm text-gray-500 mt-1">
-                    {order.category} • {order.subCategory}
+                  <p className="text-sm text-gray-500">Order</p>
+                  <p className="font-semibold text-stone-900">
+                    {order.orderId}
                   </p>
-
-                  <div className="flex flex-wrap gap-6 mt-5 text-sm text-gray-600">
-
-                    <p>
-                      <span className="font-medium">Quantity:</span>{" "}
-                      {order.quantity}
-                    </p>
-
-                    <p>
-                      <span className="font-medium">Size:</span>{" "}
-                      {order.size}
-                    </p>
-
-                  </div>
-
-                  <p className="mt-5 text-2xl font-bold">
-                    {currency}
-                    {order.price}
-                  </p>
-
                 </div>
 
+                <p className="text-sm text-gray-500">
+                  Ordered on {formatDate(order.orderDate)}
+                </p>
+
+                <div className="flex items-center gap-2 font-medium">
+                  {statusIcon(order.orderStatus.current)}
+                  {order.orderStatus.current}
+                </div>
               </div>
 
-              {/* Status */}
+              {/* Items in this order */}
+              <div className="space-y-5">
+                {order.items.map((item) => (
+                  <div
+                    key={`${item.productId}-${item.variant.size}`}
+                    className="flex gap-5"
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.name}
+                      className="w-24 h-28 rounded-xl object-cover bg-stone-100"
+                    />
 
-              <div className="md:w-56 flex flex-col justify-between">
+                    <div className="flex-1">
+                      <h2 className="font-semibold text-stone-900">
+                        {item.name}
+                      </h2>
 
-                <div>
+                      <p className="text-sm text-gray-500 mt-1">
+                        {item.category} • {item.subCategory}
+                      </p>
 
-                  <div className="flex items-center gap-2 font-medium">
+                      <div className="flex flex-wrap gap-6 mt-3 text-sm text-gray-600">
+                        <p>
+                          <span className="font-medium">Quantity:</span>{" "}
+                          {item.quantity}
+                        </p>
 
-                    {statusIcon(order.status)}
+                        <p>
+                          <span className="font-medium">Size:</span>{" "}
+                          {item.variant.size}
+                        </p>
+                      </div>
+                    </div>
 
-                    {order.status}
-
+                    <p className="font-semibold text-stone-900">
+                      {currency}
+                      {item.total.toFixed(2)}
+                    </p>
                   </div>
+                ))}
+              </div>
 
-                  <p className="text-sm text-gray-500 mt-2">
-                    Ordered on {order.date}
-                  </p>
-
-                </div>
-
-                <button
-                  className="mt-8 border border-stone-800 rounded-lg py-3 px-6 hover:bg-stone-900 hover:text-white transition"
-                >
+              {/* Footer: track + order total */}
+              <div className="mt-6 pt-4 border-t border-stone-100 flex justify-between items-center">
+                <button className="border border-stone-800 rounded-lg py-2.5 px-6 hover:bg-stone-900 hover:text-white transition">
                   Track Order
                 </button>
 
+                <p className="text-xl font-bold text-stone-900">
+                  {currency}
+                  {order.pricing.total.toFixed(2)}
+                </p>
               </div>
-
             </div>
-
-          </div>
-
-        ))}
-
-      </div>
-
+          ))}
+        </div>
+      )}
     </section>
   );
 };

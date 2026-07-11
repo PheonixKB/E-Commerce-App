@@ -11,11 +11,14 @@ const AuthInput = ({
   onChange,
   name,
   error,
+  autoComplete,
 }) => {
+  const inputId = name || label?.toLowerCase().replace(/\s+/g, "-");
+
   return (
     <div className="space-y-2">
 
-      <label className="text-sm font-medium text-stone-700">
+      <label htmlFor={inputId} className="text-sm font-medium text-stone-700">
         {label}
       </label>
 
@@ -39,11 +42,13 @@ const AuthInput = ({
         {/* Input */}
 
         <input
+          id={inputId}
           type={type}
           name={name}
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          autoComplete={autoComplete}
           className="h-14 flex-1 bg-transparent text-stone-800 placeholder:text-stone-400 focus:outline-none"
         />
 
@@ -53,6 +58,7 @@ const AuthInput = ({
           <button
             type="button"
             onClick={onRightIconClick}
+            aria-label={type === "password" ? "Show password" : "Hide password"}
             className="flex h-14 w-14 items-center justify-center text-stone-400 hover:text-stone-700"
           >
             <RightIcon size={20} />

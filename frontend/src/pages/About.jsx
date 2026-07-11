@@ -1,18 +1,17 @@
-import React, { useContext, useState, useRef } from "react";
+import React from "react";
 import { assets } from "../assets/frontend_assets/assets";
 import Title from "../components/Title";
-import { Link } from "react-router-dom";
 import NewsletterBox from "../components/NewsletterBox";
 
 const About = () => {
-  
+
   return (
     <section className="flex flex-col gap-6 max-w-8xl mx-auto px-5 sm:px-6 lg:px-8 py-16">
       {/* Page Title */}
       <div className="text-center mb-16">
         <Title text1="ABOUT" text2="US" />
 
-        <p className="max-w-4xl mx-auto mt-6 text-gray-500 leading-8 lg:translate-x-[140px] xl:translate-x-80">
+        <p className="max-w-4xl mx-auto mt-6 text-gray-500 leading-8">
           Welcome to Forever, your trusted destination for stylish and
           affordable fashion. We believe everyone deserves clothing that
           combines quality, comfort, and timeless design.

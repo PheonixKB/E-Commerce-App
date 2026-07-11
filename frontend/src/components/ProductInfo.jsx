@@ -1,4 +1,5 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Star,
   StarHalf,
@@ -10,11 +11,15 @@ import {
   Minus,
   Plus,
 } from "lucide-react";
-
-import { ShopContext } from "../context/ShopContextDefinition";
+import { useUIContext } from "../context/ui/UIContext";
+import { useCartContext } from "../context/cart/CartContext";
+import { useCheckoutContext } from "../context/checkout/CheckoutContext";
 
 const ProductInfo = ({ product }) => {
-  const { currency, addToCart } = useContext(ShopContext);
+  const { currency } = useUIContext();
+  const { addToCart } = useCartContext();
+  const { startBuyNowCheckout } = useCheckoutContext();
+  const navigate = useNavigate();
 
   const [selectedSize, setSelectedSize] = useState(product.sizes?.[0] || "S");
 
@@ -31,8 +36,16 @@ const ProductInfo = ({ product }) => {
   };
 
   const handleAddToCart = () => {
-    // Change this if your addToCart function accepts quantity.
     addToCart(product._id, selectedSize, quantity);
+  };
+
+  const handleBuyNow = () => {
+    startBuyNowCheckout({
+      productId: product._id,
+      size: selectedSize,
+      quantity,
+    });
+    navigate("/place-order");
   };
 
   return (
@@ -100,7 +113,7 @@ const ProductInfo = ({ product }) => {
       <div className="flex flex-col mt-10 gap-2">
         <h3 className="font-semibold text-lg mt-12 mb-4">Quantity</h3>
 
-        <div className="flex items-center mt-4 border rounded-lg w-fit overflow-hidden w-fit">
+        <div className="flex items-center mt-4 border rounded-lg w-fit overflow-hidden">
           <button
             onClick={decreaseQuantity}
             className="w-12 h-12 flex items-center justify-center hover:bg-gray-100"
@@ -131,13 +144,16 @@ const ProductInfo = ({ product }) => {
           Add to Cart
         </button>
 
-        <button className="w-full border border-black rounded-lg py-4 font-medium hover:bg-gray-100 transition">
+        <button
+          onClick={handleBuyNow}
+          className="w-full border border-black rounded-lg py-4 font-medium hover:bg-gray-100 transition"
+        >
           Buy Now
         </button>
       </div>
 
       {/* ================= Trust Badges ================= */}
-      <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col gap-6 lg:translate-y-2">
+      <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col gap-6">
         <div className="flex items-center gap-4 text-gray-600">
           <Truck size={22} />
 

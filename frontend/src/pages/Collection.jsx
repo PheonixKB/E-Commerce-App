@@ -1,8 +1,9 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import Title from "../components/Title";
-import ProductItem from "../components/ProductItem";
+import ProductGrid from "../components/ProductGrid";
 import { assets } from "../assets/frontend_assets/assets";
-import { ShopContext } from "../context/ShopContextDefinition";
+import { useProductContext } from "../context/product/ProductContext";
+import { useUIContext } from "../context/ui/UIContext";
 import useFilteredProducts from "../hooks/useFilteredProducts";
 import { useSearchParams } from "react-router-dom";
 
@@ -20,9 +21,10 @@ const subCategoryFilters = [
 
 const Collection = () => {
   const [searchParams] = useSearchParams();
-  
+
   const initialCategory = searchParams.get("category");
-  const { products, searchQuery } = useContext(ShopContext);
+  const { products } = useProductContext();
+  const { searchQuery } = useUIContext();
 
   const [selectedCategories, setSelectedCategories] = useState(
     initialCategory ? [initialCategory] : [],
@@ -63,7 +65,7 @@ const Collection = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-[260px_1fr] gap-10 items-start">
         {/* Sidebar */}
-        <aside className="flex flex-col gap-6 border border-stone-200 rounded-lg p-8 translate-x-2">
+        <aside className="flex flex-col gap-6 border border-stone-200 rounded-lg p-8">
           <h2 className="text-lg font-bold text-stone-700">Filters</h2>
 
           {/* Audience */}
@@ -164,14 +166,14 @@ const Collection = () => {
         {/* Products */}
         <div>
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-            <p className="text-sm text-gray-500 translate-x-10">
+            <p className="text-sm text-gray-500">
               Showing {filteredProducts.length} products
             </p>
 
             <select
               value={sortType}
               onChange={(e) => setSortType(e.target.value)}
-              className="w-full sm:w-56 border border-stone-300 rounded-md px-4 py-3 text-sm text-gray-700 outline-none focus:border-stone-700 -translate-x-8 -translate-y-2"
+              className="w-full sm:w-56 border border-stone-300 rounded-md px-4 py-3 text-sm text-gray-700 outline-none focus:border-stone-700"
             >
               <option value="relevant">Sort by: Newest</option>
               <option value="price-low-high">Price: Low to High</option>
@@ -179,23 +181,7 @@ const Collection = () => {
             </select>
           </div>
 
-          {filteredProducts.length > 0 ? (
-            <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-8 justify-items-center">
-              {filteredProducts.map((product) => (
-                <ProductItem
-                  key={product._id}
-                  id={product._id}
-                  image={product.image}
-                  name={product.name}
-                  price={product.price}
-                />
-              ))}
-            </div>
-          ) : (
-            <div className="border border-stone-200 rounded-lg py-16 text-center text-gray-500">
-              No products match the selected filters.
-            </div>
-          )}
+          <ProductGrid products={filteredProducts} />
         </div>
       </div>
     </section>

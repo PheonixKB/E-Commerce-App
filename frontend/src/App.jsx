@@ -12,8 +12,12 @@ import Orders from "./pages/Orders";
 import NavBar from "./components/NavBar";
 import Footer from "./components/Footer";
 import SearchBar from "./components/SearchBar";
+import Toast from "./components/Toast";
+import { useToastContext } from "./context/toast/ToastContext";
 
 function App() {
+  const { toast, setToast } = useToastContext();
+
   return (
     <>
       <NavBar />
@@ -32,6 +36,13 @@ function App() {
         </Routes>
         <Footer />
       </main>
+
+      <Toast
+        show={toast.show}
+        message={toast.message}
+        type={toast.type}
+        onClose={() => setToast((prev) => ({ ...prev, show: false }))}
+      />
     </>
   );
 }

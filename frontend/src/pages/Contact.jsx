@@ -81,9 +81,9 @@ const Contact = () => {
               </p>
             </div>
             <div className="text-center">
-            <button className="w-30 h-10 border border-stone-700 px-8 py-3 rounded-lg text-stone-700 hover:bg-stone-700 hover:text-white transition-all duration-300">
-              Explore Jobs
-            </button>
+              <button className="border border-stone-700 px-8 py-3 rounded-lg text-stone-700 hover:bg-stone-700 hover:text-white transition-all duration-300">
+                Explore Jobs
+              </button>
             </div>
           </div>
         </div>

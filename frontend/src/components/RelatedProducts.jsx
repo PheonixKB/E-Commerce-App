@@ -12,11 +12,11 @@ const RelatedProducts = ({ products }) => {
 
       {/* ================= Heading ================= */}
 
-      <div className="text-center mb-12 xl:translate-x-25">
+      <div className="text-center mb-12">
 
         <Title text1="RELATED" text2="PRODUCTS" />
 
-        <p className="mt-4 text-gray-500 max-w-2xl mx-auto xl:translate-x-76 leading-7 text-sm sm:text-base">
+        <p className="mt-4 text-gray-500 max-w-2xl mx-auto leading-7 text-sm sm:text-base">
           Discover more products you might like from the same collection.
         </p>
 
@@ -24,7 +24,7 @@ const RelatedProducts = ({ products }) => {
 
       {/* ================= Products Grid ================= */}
 
-      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-10 xl:translate-x-25">
+      <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-x-6 gap-y-10 justify-items-center">
 
         {products.map((product) => (
           <div
