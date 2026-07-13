@@ -6,6 +6,7 @@ import morgan from "morgan";
 import rateLimit from "express-rate-limit";
 
 import errorHandler from "./middleware/errorHandler.js";
+import userRouter from "./routes/userRoute.js";
 
 const app = express();
 
@@ -51,9 +52,8 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// Route modules get mounted here as they're built, e.g.:
-// import authRoutes from "./routes/auth.routes.js";
-// app.use("/api/auth", authRoutes);
+// Route modules get mounted here as they're built.
+app.use("/api/user", userRouter);
 
 // ==========================
 // Error handling (must be last)
